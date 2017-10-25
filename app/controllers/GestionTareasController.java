@@ -13,6 +13,7 @@ import java.util.List;
 
 import services.UsuarioService;
 import services.TareaService;
+import services.TareaServiceException;
 import models.Usuario;
 import models.Tarea;
 import security.ActionAuthenticator;
@@ -50,7 +51,12 @@ public class GestionTareasController extends Controller {
             return badRequest(formNuevaTarea.render(usuario, formFactory.form(Tarea.class), "Hay errores en el formulario"));
          }
          Tarea tarea = tareaForm.get();
-         tareaService.nuevaTarea(idUsuario, tarea.getTitulo());
+         try {
+           tareaService.nuevaTarea(idUsuario, tarea.getTitulo());
+         } catch(TareaServiceException e) {
+           flash("aviso", "Ya existe una tarea con el mismo titulo");
+           return redirect(controllers.routes.GestionTareasController.listaTareas(idUsuario));
+         }
          flash("aviso", "La tarea se ha grabado correctamente");
          return redirect(controllers.routes.GestionTareasController.listaTareas(idUsuario));
       }
