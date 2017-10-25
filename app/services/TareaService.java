@@ -34,6 +34,17 @@ public class TareaService {
       return tareas;
    }
 
+   // Devuelve la lista de tareas de un usuario, ordenadas por su nombre
+   public List<Tarea> allTareasUsuarioOrdenadasPorNombre(Long idUsuario) {
+      Usuario usuario = usuarioRepository.findById(idUsuario);
+      if (usuario == null) {
+         throw new TareaServiceException("Usuario no existente");
+      }
+      List<Tarea> tareas = new ArrayList(usuario.getTareas());
+      Collections.sort(tareas, (a, b) -> a.getTitulo().compareTo(b.getTitulo()) < 0 ? -1 : a.getTitulo().compareTo(b.getTitulo()) == 0 ? 0 : 1);
+      return tareas;
+   }
+
    public Tarea nuevaTarea(Long idUsuario, String titulo) {
       Usuario usuario = usuarioRepository.findById(idUsuario);
       if (usuario == null) {

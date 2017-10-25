@@ -17,6 +17,11 @@
 
     <h2> Listado de tareas de @usuario.getLogin()</h2>
 
+    <p>
+      <a href="@routes.GestionTareasController.listaTareas(usuario.getId())">Ordenadas por id</a>
+       -
+      <a href="@routes.GestionTareasController.listaTareasOrdenadasPorNombre(usuario.getId())">Ordenadas por nombre</a>
+    </p>
     <table class="table table-striped">
         <tr>
             <th>Tareas</th>
