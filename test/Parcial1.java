@@ -29,6 +29,10 @@ import models.JPAUsuarioRepository;
 import models.TareaRepository;
 import models.JPATareaRepository;
 
+
+import services.TareaService;
+import services.TareaServiceException;
+
 public class Parcial1 {
    static Database db;
    static private Injector injector;
@@ -61,6 +65,10 @@ public class Parcial1 {
       return injector.instanceOf(UsuarioRepository.class);
    }
 
+   private TareaService newTareaService() {
+      return injector.instanceOf(TareaService.class);
+   }
+
    @Test
    public void testEjemplo() {
       UsuarioRepository usuarioRepository = newUsuarioRepository();
@@ -69,5 +77,13 @@ public class Parcial1 {
       Tarea tarea = tareaRepository.findById(1000L);
       assertEquals(2, usuario.getTareas().size());
       assertTrue(usuario.getTareas().contains(tarea));
+   }
+
+
+   @Test(expected = TareaServiceException.class)
+   public void testAddTareaNombreDuplicado() {
+      TareaService tareaService = newTareaService();
+      long idUsuario = 1000L;
+      tareaService.nuevaTarea(idUsuario, "Renovar DNI");
    }
 }

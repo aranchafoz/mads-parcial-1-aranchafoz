@@ -50,6 +50,13 @@ public class TareaService {
       if (usuario == null) {
          throw new TareaServiceException("Usuario no existente");
       }
+      List<Tarea> tareas = new ArrayList<Tarea>();
+      tareas.addAll(usuario.getTareas());
+      for(Tarea t : tareas) {
+        if (t.getTitulo().compareToIgnoreCase(titulo) == 0) {
+           throw new TareaServiceException("Ya existe una tarea con el mismo título");
+        }
+      }
       Tarea tarea = new Tarea(usuario, titulo);
       return tareaRepository.add(tarea);
    }
